@@ -7,13 +7,14 @@
 - **Soul Engine** – The user identity and modeling engine.
 - **Life Intelligence** – The dynamic decision graph engine for exploration and execution.
 
-These modules work together within a unified, navigable graph-based interface that evolves with the user, enabling clarity, alignment, and action.
+These modules work together within a unified, navigable graph-based interface that evolves with the user, enabling clarity, alignment, and action. Nodes may have a different behavior depending on the module that's being used (Soul Engine/Life Intelligence). *Subject to change*.
 
 ---
 
 ## 🔧 Core Modules Breakdown
 
 ### 🧬 1. Soul Engine (Identity Modeling)
+*“Who am I?” — a map of identity, values, traits, motivations.*
 
 - **Purpose:** Establish a deep psychological, philosophical, and behavioral model of the user.
 
@@ -35,9 +36,29 @@ These modules work together within a unified, navigable graph-based interface th
   - Modular input pipeline using local-first logic and encrypted persistence.
   - Supports dynamic refinement through journaling and behavioral logging.
 
+#### Node Representation (Soul Engine)
+
+> - **Node meaning**: Core self-concepts (e.g., "Curiosity", "Desire for Autonomy", "Avoids Authority", "Privacy-Oriented", "Builder Archetype")
+> 
+> - **Node attributes**:
+> 
+>   - Type: Value / Trait / Constraint / Archetype / Meta-goal
+>   - Source: Inferred vs. user-defined
+>   - Strength/confidence
+> 
+> - **Graph edges**: Relationships between identity traits (e.g., “Curiosity” fuels “Desire to Explore”, “Builder” conflicts with “Need for Predictability”)
+> 
+> - **UX actions**:
+> 
+>   - Explore inferred identity structure
+>   - Edit or confirm/refute nodes
+>   - See identity shifts over time
+>   - Export profile vector
+
 ---
 
 ### 🧠 2. Life Intelligence (Goal Mapping & Guidance)
+*“What should I do?” — a map of actionable, outcome-based paths.*
 
 - **Purpose:** Map personalized, actionable life paths aligned with the user's Soul Profile.
 
@@ -58,6 +79,46 @@ These modules work together within a unified, navigable graph-based interface th
   - Scoring based on alignment to Soul Engine, feasibility, cost, and impact.
   - Powered by `networkx` or `neo4j` with ML-based ranking of paths.
   - Action and feedback loop continuously improves node accuracy.
+
+####  Node Representation (Life Intelligence)
+
+> - **Node meaning**: States or decisions in real-world domains (e.g., "Launch Solo AI Product", "Join Small ML Startup", "Move to Japan", "Get VC Funding", "Burnout Risk")
+> 
+> - **Node attributes**:
+> 
+>   - Feasibility
+>   - Impact vs. effort
+>   - Alignment with Soul Engine
+>   - Constraints (time, resources, social, psychological)
+> 
+> - **Graph edges**: Paths, dependencies, or tradeoffs between choices
+> 
+>   - E.g., "Join Startup" → "Learn Product Dev" → "Launch Venture"
+> 
+> - **UX actions**:
+> 
+>   - Simulate paths forward
+>   - Filter based on personal values
+>   - Lock or hide routes
+>   - Create custom goals
+
+---
+
+### 3. DataLayer (Optional Enhancer)
+#### Purpose:
+Ingest optional user artifacts to deepen understanding with no extra input.
+
+#### Sources:
+- Markdown notes (Obsidian, Logseq)
+- Bookmarks (browser exports)
+- Journals (free text)
+- GitHub / commit history
+- Personal metadata (file activity, system logs — local only)
+
+#### Tools:
+- `DataConnector`: Adapters for each source
+- `TextEmbedder`: Embedding-based vector model for similarity search
+- `InsightExtractor`: Matches external data with internal identity graph
 
 ---
 
@@ -98,7 +159,7 @@ These modules work together within a unified, navigable graph-based interface th
 
 ```mermaid
 graph TD
-    A[User Input (Q&A / Prompts)] --> B[Soul Engine]
+    A[User Input - Q&A / Prompts] --> B[Soul Engine]
     B --> C[Identity Embedding Layer]
     C --> D[Soul Profile Object]
     D --> E[Life Intelligence Engine]
@@ -116,6 +177,23 @@ graph TD
     G --> J
     K --> J
 ```
+Possible node example:
+```json
+{
+  "id": "freedom",
+  "type": "value",
+  "label": "Freedom",
+  "weight": 0.92,
+  "source": "q1_user_input",
+  "embedding": [...], // optional
+  "tags": ["autonomy", "independence"]
+}
+```
+So if a user says:
+
+    "I value freedom, autonomy, and not having to answer to anyone."
+
+You might extract 2–3 value nodes, each tagged, scored, and stored as individual entries in a personal identity graph.
 
 ---
 
@@ -156,6 +234,22 @@ graph TD
 - **User Ownership:**
   - Transparent identity logic
   - Portable profiles
+
+### 🔁 Ideal UX Flow (v1)
+
+1. User opens app → lands in Life Intelligence Graph (default UI)
+2. Suggested next nodes/goals visible, possible paths highlighted
+3. Clicking a node shows:
+    - Its description
+    - Estimated effort/impact
+    - Alignment level with their Soul Engine profile
+    - “Why this suggestion?” powered by explainability
+4. Advanced/curious users can open the Soul Engine via a button/tab
+    - View/edit profile
+    - See how identity affects Life Graph recommendations
+    - Possibly visualize evolution over time
+
+This provides instant value while remaining deep and extensible.
 
 ---
 

@@ -62,6 +62,49 @@ SoulNode(type="goal", label="financial autonomy")
 
 ---
 
+### 1.1 `Embedding Layer`
+#### Purpose:
+To Build a Local Knowledge Graph Engine Backed by Embeddings + Ontologies. Instead of hardcoding rules, we use a hybrid system. 
+
+#### Components:
+- `Static Ontology Layer`:  A extremely curated JSON/YAML file, with example provided below. 
+- `Local Embedding Similarity (Core Strategy)`: We use sentence-transformers to embed all traits. Then:
+    - Compute cosine similarity between all node pairs.
+    - Build edges based on high similarity + contextual tags (e.g., both from "skills" or one from "fear", one from "value").
+    - This gives semantic edges without needing the LLM again.
+- `Relationship Templates`: For readability and control, we define soft relationship templates. These act like relationship scaffolding - not rules, but interpretable mappings to label edges after similarity is calculated.
+
+#### Sample Types:
+
+##### Static Ontology Layer
+```json
+{
+  "freedom": {
+    "type": "value",
+    "related_fears": ["control", "oppression", "dependency"],
+    "related_motivations": ["autonomy", "self-direction"],
+    "related_interests": ["political philosophy", "digital privacy"]
+  },
+  "competence": {
+    "related_fears": ["inadequacy", "failure"],
+    "related_motivations": ["mastery", "growth"],
+    "related_skills": ["programming", "strategy"]
+  }
+}
+``` 
+
+##### Relationship Templates
+```python
+TEMPLATES = [
+    ("fear", "value", "avoids"),     # fear of failure → value of competence
+    ("motivation", "value", "seeks"),# motivation of mastery → value of growth
+    ("interest", "skill", "develops"),
+    ("skill", "value", "supports"),
+]
+```
+
+---
+
 ### 2. `LifeIntelligenceEngine`
 #### Purpose:
 Generate a directed, navigable graph of choices, paths, opportunities, and strategies — rooted in Soul Profile.
@@ -136,30 +179,6 @@ Ingest optional user artifacts to deepen understanding with no extra input.
 
 ---
 
-## 📦 Data Structures (Simplified)
-
-```python
-class SoulNode:
-    def __init__(self, type: str, label: str, weight: float = 1.0):
-        ...
-
-class LifeNode:
-    def __init__(self, label: str, type: str, alignment_score: float, metadata: dict):
-        ...
-
-class SoulProfile:
-    def __init__(self, nodes: List[SoulNode]):
-        ...
-
-class LifeGraph:
-    def __init__(self, profile: SoulProfile):
-        self.nodes = []
-        self.edges = []
-        self.build_graph(profile)
-```
-
----
-
 ## 🧪 Validation Metrics (R&D Phase)
 
 - Top-k node alignment score (match between suggestion and actual path taken)
@@ -186,5 +205,5 @@ Think of it like:
 🗺️ = action map  
 
 Both are technically graphs, but only Life Intelligence is **navigated** by the user.  
-Soul Engine is only **inspected/edited**.
+Soul Engine is only **inspected/edited/evolved**.
 

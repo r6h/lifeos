@@ -1,0 +1,16 @@
+# very organized list
+
+Currently developing the MVP for the soul engine.
+
+### Todo
+
+- [ ] Start working on the embedding layer  
+- [ ] Coverage detection
+  - [ ] Second pass (similarity matching, ontology reasoning)  
+
+### In Progress
+
+- [ ] Redefining seed questions and prompt engineering
+
+### Done ✓
+
