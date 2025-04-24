@@ -24,6 +24,8 @@
     - Suggest (not ask) clarifying follow-up questions (if needed)
 5. **Optional Second Pass (local)** → Use similarity matching, ontology reasoning, or prompt-engineered rule sets to relate traits to each other.
 
+##### Why this approach?
+
 - **80% of users** give shallow answers → You don't need the model to do 10 rounds with them.
 - The high-context users already give you a lot in 1 go.
 - You extract signal **before** sending to LLM, saving money.
